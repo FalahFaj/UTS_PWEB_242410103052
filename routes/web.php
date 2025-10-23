@@ -11,7 +11,7 @@ Route::get('/', [HomeController::class, 'tampilkanHome'])->name('home');
 
 Route::get('/login', [AuthController::class, 'tampilkanLogin'])->name('login.form');
 
-Route::post('/login', [AuthController::class, 'Login'])->name('login.proses');
+Route::get('/login-process', [AuthController::class, 'Login'])->name('login.proses');
 
 Route::get('/dashboard/{username}', [DashboardController::class, 'tampilkanDashboard'])->name('dashboard');
 

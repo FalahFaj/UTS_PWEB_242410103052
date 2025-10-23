@@ -48,19 +48,19 @@
         <section class="bg-white py-20">
             <div class="container mx-auto px-6 text-center">
                 <h3 class="text-3xl font-bold mb-3">Fitur Utama</h3>
-                <p class="text-gray-500 mb-12">Dibuat dengan laravel.</p>
+                <p class="text-gray-500 mb-12">Mengelola data mahasiswa.</p>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="p-8 border border-gray-200 rounded-xl shadow-sm">
-                        <h4 class="text-xl font-semibold text-violet-700 mb-2">Routing & Controller</h4>
-                        <p class="text-gray-600">Arsitektur terpisah untuk setiap halaman, membuat kode lebih rapi dan terkelola.</p>
+                        <h4 class="text-xl font-semibold text-violet-700 mb-2">Menampilkan Data</h4>
+                        <p class="text-gray-600">Menampilkan seluruh data mahasiswa</p>
                     </div>
                     <div class="p-8 border border-gray-200 rounded-xl shadow-sm">
-                        <h4 class="text-xl font-semibold text-violet-700 mb-2">Blade Templating</h4>
-                        <p class="text-gray-600">Memanfaatkan Layout, Component, dan directive Blade untuk tampilan yang efisien.</p>
+                        <h4 class="text-xl font-semibold text-violet-700 mb-2">Mengubah Data</h4>
+                        <p class="text-gray-600">Mengubah mulai dari nama, nim, dan jurusan</p>
                     </div>
                     <div class="p-8 border border-gray-200 rounded-xl shadow-sm">
-                        <h4 class="text-xl font-semibold text-violet-700 mb-2">Data Dummy</h4>
-                        <p class="text-gray-600">Aplikasi berjalan sepenuhnya tanpa koneksi database, sesuai dengan ketentuan.</p>
+                        <h4 class="text-xl font-semibold text-violet-700 mb-2">Menghapus Data</h4>
+                        <p class="text-gray-600">Menghapus data mahasiswa yang diinginkan</p>
                     </div>
                 </div>
             </div>

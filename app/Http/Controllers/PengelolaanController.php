@@ -24,7 +24,7 @@ class PengelolaanController extends Controller
 
         if ($cek) {
             Mahasiswa::tambahMahasiswa($cek);
-            return redirect()->back()->with('success', 'Data berhasil disimpan.');
+            return redirect()->route('pengelolaan.index')->with('success', 'Data berhasil disimpan.');
         }
 
         return redirect()->back()->with('error', 'Data gagal disimpan.');

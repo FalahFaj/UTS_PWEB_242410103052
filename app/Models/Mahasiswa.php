@@ -22,34 +22,48 @@ class Mahasiswa extends Model
         if (!session()->has(self::$sessionKey)) {
             session([self::$sessionKey => self::dataMahasiswa()]);
         }
-        return session(self::$sessionKey);
+        // [PERBAIKAN] Ubah array dari session menjadi Laravel Collection
+        return collect(session(self::$sessionKey));
     }
 
     public static function cariMahasiswa($id)
     {
-        return self::dataMahasiswaList()->get($id);
+        // [PERBAIKAN] Gunakan firstWhere untuk mencari data berdasarkan nilai 'id'
+        return self::dataMahasiswaList()->firstWhere('id', (int) $id);
     }
 
     public static function dataMahasiswaDetail($id)
     {
-        $daftarMahasiswa = self::dataMahasiswaList();
-        return $daftarMahasiswa['data' . $id] ?? null;
+        // [PERBAIKAN] Arahkan ke metode cariMahasiswa yang sudah benar
+        return self::cariMahasiswa($id);
     }
 
-    public static function tambahMahasiswa(array $dataBaru): string
+    public static function tambahMahasiswa(array $dataBaru): int
     {
-        $data = self::dataMahasiswaList()->all();
-        $data['data' . $dataBaru['id']] = $dataBaru;
-        session([self::$sessionKey => $data]);
+        $currentData = self::dataMahasiswaList(); // Ini sudah menjadi Collection
+
+        // [PERBAIKAN] Buat ID baru secara otomatis
+        $lastId = $currentData->max('id') ?? 0;
+        $dataBaru['id'] = $lastId + 1;
+
+        // Tambahkan data baru ke Collection dan simpan kembali ke session
+        $currentData->push($dataBaru);
+        session([self::$sessionKey => $currentData->values()->all()]);
+
         return $dataBaru['id'];
     }
 
     public static function updateMahasiswa(string $id, array $dataUpdate): bool
     {
-        $data = self::dataMahasiswaList()->all();
-        if (isset($data['data' . $id])) {
-            $data['data' . $id] = array_merge($data['data' . $id], $dataUpdate);
-            session([self::$sessionKey => $data]);
+        $currentData = self::dataMahasiswaList();
+        // [PERBAIKAN] Cari index dari data yang akan diupdate
+        $index = $currentData->search(fn ($mhs) => $mhs['id'] == (int) $id);
+
+        if ($index !== false) {
+            $existingMahasiswa = $currentData->get($index);
+            $updatedMahasiswa = array_merge($existingMahasiswa, $dataUpdate);
+            $currentData->put($index, $updatedMahasiswa); // Update data di Collection
+            session([self::$sessionKey => $currentData->values()->all()]); // Simpan kembali ke session
             return true;
         }
         return false;
@@ -57,10 +71,13 @@ class Mahasiswa extends Model
 
     public static function hapusMahasiswa(string $id): bool
     {
-        $data = self::dataMahasiswaList()->all();
-        if (isset($data['data' . $id])) {
-            unset($data['data' . $id]);
-            session([self::$sessionKey => $data]);
+        $currentData = self::dataMahasiswaList();
+        // [PERBAIKAN] Filter data untuk menghapus item yang cocok
+        $filteredData = $currentData->filter(fn ($mhs) => $mhs['id'] != (int) $id);
+
+        if ($filteredData->count() < $currentData->count()) {
+            // Simpan data yang sudah difilter dan reset index array-nya
+            session([self::$sessionKey => $filteredData->values()->all()]);
             return true;
         }
         return false;
